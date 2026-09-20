@@ -1,53 +1,76 @@
 # Decision Log
 
-## Scope and sequencing
+## What I implemented
 
-I used Hospital 1 as the labelled development set, then implemented full
-contract-aware audits for Hospitals 3 and 4. I selected these two because they
-exercise different contract structures: Hospital 3 combines a base agreement,
-rate appendix, and amendment with effective dates, while Hospital 4 expresses
-conditional reimbursement rules in a single agreement. This provided broader
-coverage of parsing and rule interactions within the exercise's time budget.
-Hospitals 2 and 5 were not implemented. Given more time, I would process them
-using the same staged workflow: contract extraction, extraction validation,
-service matching, rule evaluation, manual review, and submission validation.
+I used Hospital 1 as the labelled development and calibration set, then built
+the final audit coverage for Hospitals 3 and 4. I selected these two because
+they represent different contract structures: Hospital 3 combines a base
+agreement, rate appendix, and dated amendment, while Hospital 4 contains
+conditional reimbursement rules in one agreement. This provided meaningful
+coverage within the exercise time limit instead of thin coverage across every
+hospital.
 
-## Assumptions and decisions
+The pipeline parses contract rate tables, normalizes abbreviated service
+descriptions, matches invoice lines to contracted services, applies contract
+and data-integrity rules, calculates expected totals, assigns error categories,
+and generates the required `submission.csv`. It checks contract numbers,
+invoice and line arithmetic, dates, duplicate IDs and services, unit basis,
+rates, daily caps, bundles, premiums, exclusions, and volume discounts.
 
-| Issue | Decision |
-|---|---|
-| Duplicate invoice IDs | Flag the invoice ID as erroneous and treat the last invoice row as the canonical claim, matching the one-row-per-ID label and submission format. Canonical line selection prevents duplicated records from inflating corrected totals. |
-| Money and rounding | Keep every monetary value as integer cents. Apply contract percentages using `Decimal` and round half up after the applicable step; do not use binary floating-point amounts. |
-| Hospital 3 amendment | Apply amended rates and newly added services only from their stated effective date. A service billed before its availability date is flagged separately. |
-| Free-text descriptions | Normalize case, punctuation, reference suffixes, and common abbreviations, then fuzzy-match against contracted service names. Price and unit basis are secondary identity signals, not replacements for semantic similarity. |
-| Uncertain service identity | If textual confidence is low and the billed price or unit does not support the proposed match, classify the line as `unknown_service` rather than confidently assigning a contractual rate. Keep its arithmetic amount when an expected contractual amount cannot be justified. |
-| Multiple errors on one invoice | Preserve all supported categories in a pipe-separated, sorted field. The invoice is flagged once even when several categories apply. |
-| Date overlaps | Record malformed dates, dates outside the contract term, and services after the invoice date as separate factual checks. These conditions may overlap even if the development labels record only one primary category. |
-| Cross-invoice duplicates | Require the same patient and an exact line signature. Flag the copied occurrence only when another occurrence falls within the patient's genuine admission-to-discharge window. This avoids flagging legitimate repeated services. |
-| Daily caps | Evaluate quantity by patient, service, and service date. Flag clear excess quantities. Hospital 1 showed that exact corrected totals can remain ambiguous when caps interact with other adjustments, so confidence is lower where the total cannot be reconstructed exactly. |
-| Rule ordering | Follow the ordering stated in each contract. Bundle substitution is evaluated before applicable premiums or cumulative discounts when the contract specifies that sequence. |
-| Confidence | Confidence values are conservative rule-based judgments, not trained probabilities. Deterministic arithmetic and contract-number checks receive higher confidence than fuzzy matches or ambiguous total reconstruction. |
+## Tools and methods used
 
-## Ambiguities and unresolved limitations
+- Python 3.11 with `pandas` for loading, joining, validating, and aggregating
+  invoice data.
+- `RapidFuzz` plus deterministic text normalization for service matching.
+- `Decimal` with round-half-up for percentage adjustments while keeping all
+  money as integer cents.
+- Rule-based contract engines for transparent, auditable decisions rather than
+  a trained classifier.
+- `pytest` for automated validation of submission structure, coverage, data
+  types, confidence values, categories, uniqueness, and ordering.
+- AI assistance for iterative implementation, debugging, and documentation, as
+  permitted by the exercise. The main prompt iterations are retained in
+  `prompts/`; generated suggestions were reviewed and tested before use.
 
-1. A short description can be a lexical subset of a longer contracted service
-   and receive a misleadingly high fuzzy score. I require supporting unit or
-   price evidence where possible and otherwise flag uncertainty.
-2. Development labels sometimes use a primary category where two factual date
-   violations are simultaneously true. I retained the factual categories and
-   documented the category-level difference rather than tuning it away.
-3. Four Hospital 1 daily-cap invoices were detected correctly but did not match
-   the labelled corrected total exactly. I did not hard-code invoice-specific
-   corrections because that would overfit the development set.
-4. Hospitals 3 and 4 have no ground-truth labels. I reviewed low-confidence and
-   rate-mismatch cases manually, but their reported accuracy cannot be measured
-   directly.
+## Key decisions and assumptions
 
-## Final submission decision
+- Duplicate invoice IDs are flagged, and the last invoice row is treated as
+  the canonical record required by the one-row-per-ID submission format.
+- Free-text matches require semantic similarity, with price and unit basis used
+  only as supporting signals. Unreliable matches are classified as
+  `unknown_service` instead of forcing a contract rate.
+- Multiple supported errors are preserved as sorted, pipe-separated categories.
+- Cross-invoice duplicates require the same patient and exact line signature;
+  only the copied occurrence outside the genuine stay is removed.
+- Contract rules are applied in their stated order, including amendment
+  effective dates and interactions between bundles, premiums, and discounts.
+- Confidence values are rule-based judgments, not trained probabilities.
 
-The final `submission.csv` contains every unique invoice from Hospitals 3 and
-4: 1,767 rows in total, of which 150 are flagged. Hospital 1 is reported only
-in the evaluation document and is excluded from the submission. The repository
-also retains intermediate review reports so that uncertain decisions can be
-audited, while the final submission is generated reproducibly by
-`src/invoice_audit/build_submission.py`.
+## Validation and limitations
+
+Hospital 1 achieved invoice-level precision, recall, and F1 of 1.000 on the
+provided development labels. This is an optimistic development-set result, not
+an estimate of unseen performance. Category-level evaluation still shows one
+missed unknown-service case, two additional factual date-category flags, and
+four daily-cap invoices whose corrected totals do not exactly match the labels.
+I did not hard-code those invoice-specific answers because that would overfit
+the labelled data.
+
+Hospitals 3 and 4 are unlabelled, so their true accuracy cannot be claimed. The
+final submission contains every unique invoice from both hospitals: 1,767 rows,
+with 150 flagged. Low-confidence and rate-mismatch cases were exported for
+manual review, and eight automated submission tests pass.
+
+## What I would do with one additional week
+
+1. Implement Hospitals 2 and 5 using the same staged parsing, matching, review,
+   and validation workflow.
+2. Add contract-rule unit tests with small synthetic examples for every bundle,
+   premium, discount, cap, exclusion, and amendment boundary.
+3. Improve service matching with contract-specific aliases and a manually
+   reviewed validation set, then calibrate thresholds without invoice-specific
+   exceptions.
+4. Perform a second independent review of flagged and borderline Hospital 3
+   and 4 cases and measure reviewer agreement.
+5. Add continuous integration so tests and submission validation run
+   automatically on every change.
