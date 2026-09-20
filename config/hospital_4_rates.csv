@@ -1,0 +1,99 @@
+service,unit_basis,rate_cents,daily_cap
+Advanced Oncology Ward Bed Occupancy,per_night,68700,
+Advanced Orthopaedic Ward Bed Occupancy,per_night,97925,12
+Advanced Paediatric Theatre Time,per_hour,37100,
+Advanced Palliative Home Visit,per_visit,11450,
+Advanced Vascular Endoscopic Procedure,per_procedure,321775,
+Ambulatory Cardiac Ward Bed Occupancy,per_day,46350,4
+Ambulatory Gastrointestinal Nutritional Support,per_unit_dispensed,4175,
+Ambulatory Haematology Transfusion Service,per_procedure,402275,
+Ambulatory Immunologic Ward Bed Occupancy,per_day,74700,4
+Ambulatory Musculoskeletal Specimen Analysis,per_item,9550,
+Ambulatory Musculoskeletal Ventilation Support,per_day,157150,
+Ambulatory Obstetric Case Conference,per_hour,13975,
+Ambulatory Paediatric Critical Care Occupancy,per_hour,4750,
+Ambulatory Rheumatologic Rehabilitation Programme,per_visit,38325,
+Assisted Cardiac Ventilation Support,per_day,155700,
+Assisted Gastrointestinal Anaesthesia Administration,per_hour,3050,24
+Assisted Obstetric Specimen Analysis,per_test,10100,
+Assisted Paediatric Physiotherapy Session,per_hour,3150,
+Assisted Paediatric Theatre Time,per_hour,9275,
+Assisted Renal Nutritional Support,per_unit_dispensed,3575,
+Assisted Urologic Nursing Observation,per_day,132675,4
+Bedside Cardiac Home Visit,per_visit,64800,
+Bedside Gastrointestinal Biopsy Procedure,per_item,11075,8
+Bedside Obstetric Imaging Interpretation,per_procedure,365675,
+Comprehensive Neurological Endoscopic Procedure,per_procedure,309275,
+Comprehensive Ophthalmic Laboratory Panel,per_test,58525,
+Comprehensive Urologic Imaging Interpretation,per_test,23075,
+Continuous Gastrointestinal Transfusion Service,per_procedure,308100,
+Continuous Infectious Critical Care Occupancy,per_hour,13925,
+Continuous Psychiatric Rehabilitation Programme,per_day,34900,
+Elective Gastrointestinal Nursing Observation,per_day,58925,6
+Elective Neurological Ward Bed Occupancy,per_night,170125,
+Elective Obstetric Transfusion Service,per_unit_dispensed,1425,
+Elective Ophthalmic Radiotherapy Fraction,per_procedure,373600,
+Emergency Cardiac Physiotherapy Session,per_hour,9875,
+Emergency Metabolic Radiotherapy Fraction,per_procedure,364925,
+Emergency Rheumatologic Rehabilitation Programme,per_day,62000,
+Extended Hepatic Discharge Planning,per_hour,7950,
+Extended Hepatic Transfusion Service,per_unit_dispensed,8450,8
+Extended Obstetric Case Conference,per_visit,41425,
+Extended Psychiatric Endoscopic Procedure,per_procedure,325800,
+Extended Renal Ward Bed Occupancy,per_night,174050,
+Extended Rheumatologic Nursing Observation,per_night,87375,
+Extended Urologic Telemetry Monitoring,per_day,144825,12
+Focused Metabolic Biopsy Procedure,per_item,15025,8
+Focused Urologic Case Conference,per_hour,20200,
+Focused Vascular Infusion Therapy,per_unit_dispensed,5775,
+Focused Vascular Transport Service,per_item,24450,
+Inpatient Orthopaedic Anaesthesia Administration,per_procedure,145950,8
+Inpatient Psychiatric Home Visit,per_visit,19275,
+Intensive Geriatric Case Conference,per_visit,10475,8
+Intensive Paediatric Consultation,per_visit,39175,
+Intensive Rheumatologic Radiotherapy Fraction,per_item,23425,
+Intensive Urologic Specimen Analysis,per_item,19675,24
+Intensive Vascular Sterilisation Service,per_item,25350,
+Intermittent Neurological Laboratory Panel,per_test,10175,
+Intermittent Oncology Home Visit,per_visit,22050,
+Intermittent Psychiatric Rehabilitation Programme,per_visit,32275,
+Intermittent Renal Anaesthesia Administration,per_hour,6600,
+Intermittent Rheumatologic Dialysis Session,per_procedure,126900,
+Intermittent Urologic Telemetry Monitoring,per_hour_per_item,7275,
+Outpatient Cardiac Physiotherapy Session,per_visit,27300,
+Outpatient Geriatric Diagnostic Imaging,per_procedure,190450,
+Outpatient Obstetric Dialysis Session,per_procedure,367900,
+Outpatient Orthopaedic Recovery Room Occupancy,per_hour,11025,
+Outpatient Rheumatologic Anaesthesia Administration,per_hour,20875,
+Outpatient Urologic Endoscopic Procedure,per_procedure,372925,
+Outpatient Urologic Theatre Time,per_hour,7650,
+Postoperative Cardiac Wound Care,per_item,17325,
+Postoperative Geriatric Case Conference,per_hour,4275,
+Postoperative Geriatric Imaging Interpretation,per_test,43925,
+Postoperative Oncology Diagnostic Imaging,per_item,23250,12
+Postoperative Otolaryngologic Telemetry Monitoring,per_hour,10000,24
+Postoperative Paediatric Imaging Interpretation,per_procedure,88600,
+Postoperative Paediatric Sterilisation Service,per_item,16050,8
+Postoperative Palliative Recovery Room Occupancy,per_night,86550,
+Postoperative Rheumatologic Nursing Observation,per_day,46425,6
+Preoperative Geriatric Diagnostic Imaging,per_test,19550,
+Preoperative Haematology Imaging Interpretation,per_test,11375,
+Preoperative Musculoskeletal Recovery Room Occupancy,per_night,162775,
+Preoperative Oncology Diagnostic Imaging,per_procedure,102650,8
+Routine Cardiac Home Visit,per_visit,16200,
+Specialist Cardiac Ventilation Support,per_hour,18125,
+Specialist Gastrointestinal Imaging Interpretation,per_procedure,83625,
+Specialist Hepatic Discharge Planning,per_visit,41175,
+Specialist Immunologic Consultation,per_procedure,114500,
+Standard Hepatic Infusion Therapy,per_unit_dispensed,3975,
+Standard Oncology Ward Bed Occupancy,per_day,57950,
+Standard Ophthalmic Laboratory Panel,per_item,17925,
+Standard Orthopaedic Critical Care Occupancy,per_night,148975,
+Standard Paediatric Dialysis Session,per_procedure,368050,
+Standard Vascular Home Visit,per_visit,26200,
+Supervised Gastrointestinal Nursing Observation,per_night,156825,
+Supervised Immunologic Ward Bed Occupancy,per_night,194400,
+Supervised Pulmonary Anaesthesia Administration,per_hour,13500,
+Supervised Pulmonary Home Visit,per_visit,28675,
+Supervised Rheumatologic Dialysis Session,per_visit,17375,
+Supervised Vascular Radiotherapy Fraction,per_item,15825,

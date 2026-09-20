@@ -1,0 +1,121 @@
+service,unit_basis,rate_cents,daily_cap,amended_rate_cents,amendment_effective_date,available_from
+Advanced Gastrointestinal Telemetry Monitoring,per_day,128100,,,,2024-01-01
+Advanced Geriatric Nutritional Support,per_unit_dispensed,1250,,,,2024-01-01
+Advanced Metabolic Discharge Planning,per_hour,21075,,,,2024-01-01
+Advanced Musculoskeletal Radiotherapy Fraction,per_procedure,348975,,,,2024-01-01
+Advanced Paediatric Telemetry Monitoring,per_day,41000,,,,2024-01-01
+Advanced Rheumatologic Pharmaceutical Dispensing,per_item,27875,,,,2024-01-01
+Ambulatory Metabolic Isolation Room Occupancy,per_day,159725,,,,2024-01-01
+Ambulatory Ophthalmic Imaging Interpretation,per_procedure,414850,,,,2024-01-01
+Ambulatory Otolaryngologic Imaging Interpretation,per_procedure,182625,12,208200,2025-01-01,2024-01-01
+Ambulatory Renal Case Conference,per_hour,8775,,,,2024-01-01
+Assisted Ophthalmic Recovery Room Occupancy,per_hour,8775,,,,2024-01-01
+Assisted Paediatric Dialysis Session,per_procedure,372800,12,,,2024-01-01
+Assisted Urologic Endoscopic Procedure,per_procedure,94250,,111225,2025-01-01,2024-01-01
+Bedside Cardiac Recovery Room Occupancy,per_night,167750,,,,2024-01-01
+Bedside Geriatric Telemetry Monitoring,per_day,131100,,,,2024-01-01
+Bedside Metabolic Infusion Therapy,per_unit_dispensed,1850,,,,2024-01-01
+Bedside Neurological Pharmaceutical Dispensing,per_item,9675,,,,2024-01-01
+Bedside Neurological Radiotherapy Fraction,per_item,2575,,3050,2025-01-01,2024-01-01
+Bedside Oncology Case Conference,per_hour,11400,,,,2024-01-01
+Bedside Palliative Wound Care,per_visit,14150,,,,2024-01-01
+Bedside Pulmonary Sterilisation Service,per_procedure,381825,,,,2024-01-01
+Bedside Renal Imaging Interpretation,per_test,59250,,,,2024-01-01
+Bedside Urologic Laboratory Panel,per_item,2000,,,,2024-01-01
+Bedside Urologic Ventilation Support,per_day,168975,,,,2024-01-01
+Bedside Vascular Critical Care Occupancy,per_day,144425,8,,,2024-01-01
+Comprehensive Haematology Radiotherapy Fraction,per_procedure,156925,,,,2024-01-01
+Comprehensive Orthopaedic Wound Care,per_item,16600,,,,2024-01-01
+Comprehensive Palliative Diagnostic Imaging,per_procedure,163525,,,,2024-01-01
+Continuous Gastrointestinal Laboratory Panel,per_test,56000,,,,2024-01-01
+Continuous Immunologic Critical Care Occupancy,per_hour,20725,,,,2024-01-01
+Continuous Immunologic Isolation Room Occupancy,per_day,116275,24,,,2024-01-01
+Continuous Pulmonary Wound Care,per_item,27625,,,,2024-01-01
+Continuous Renal Isolation Room Occupancy,per_day,50125,,,,2024-01-01
+Elective Palliative Physiotherapy Session,per_hour,18800,,,,2024-01-01
+Elective Pulmonary Consultation,per_procedure,399025,,,,2024-01-01
+Emergency Dermatologic Sterilisation Service,per_item,23025,,,,2024-01-01
+Emergency Oncology Biopsy Procedure,per_item,20375,,,,2024-01-01
+Emergency Pulmonary Biopsy Procedure,per_item,26350,,,,2024-01-01
+Emergency Renal Isolation Room Occupancy,per_night,49050,,,,2024-01-01
+Emergency Vascular Biopsy Procedure,per_procedure,215625,,,,2024-01-01
+Extended Dermatologic Infusion Therapy,per_unit_dispensed,3475,,,,2024-01-01
+Extended Dermatologic Sterilisation Service,per_procedure,161525,,,,2024-01-01
+Extended Geriatric Infusion Therapy,per_unit_dispensed,6100,,,,2024-01-01
+Extended Haematology Radiotherapy Fraction,per_item,27575,,,,2024-01-01
+Extended Infectious Telemetry Monitoring,per_day,82675,,,,2024-01-01
+Extended Musculoskeletal Endoscopic Procedure,per_procedure,442975,,,,2024-01-01
+Extended Neurological Theatre Time,per_hour,3700,,,,2024-01-01
+Focused Metabolic Theatre Time,per_hour,4200,12,,,2024-01-01
+Focused Neurological Physiotherapy Session,per_visit,11125,,,,2024-01-01
+Focused Obstetric Nutritional Support,per_unit_dispensed,6925,,,,2024-01-01
+Focused Urologic Telemetry Monitoring,per_hour_per_item,5225,,,,2024-01-01
+Inpatient Gastrointestinal Pharmaceutical Dispensing,per_item,23550,12,,,2024-01-01
+Inpatient Haematology Imaging Interpretation,per_procedure,123075,,,,2024-01-01
+Inpatient Hepatic Biopsy Procedure,per_item,3650,,,,2024-01-01
+Inpatient Infectious Specimen Analysis,per_test,34775,,,,2024-01-01
+Inpatient Metabolic Infusion Therapy,per_hour,14850,,,,2024-01-01
+Inpatient Metabolic Theatre Time,per_hour,21000,12,,,2024-01-01
+Inpatient Musculoskeletal Theatre Time,per_hour,9250,,,,2024-01-01
+Inpatient Obstetric Diagnostic Imaging,per_procedure,327325,8,,,2024-01-01
+Inpatient Obstetric Wound Care,per_visit,34175,,,,2024-01-01
+Intensive Immunologic Wound Care,per_item,13275,,,,2024-01-01
+Intensive Infectious Anaesthesia Administration,per_procedure,294675,4,312350,2025-01-01,2024-01-01
+Intensive Oncology Nutritional Support,per_day,62675,,,,2024-01-01
+Intensive Ophthalmic Laboratory Panel,per_test,41825,,39725,2025-01-01,2024-01-01
+Intensive Otolaryngologic Anaesthesia Administration,per_procedure,68025,,80275,2025-01-01,2024-01-01
+Intensive Paediatric Biopsy Procedure,per_procedure,399700,,,,2024-01-01
+Intermittent Dermatologic Physiotherapy Session,per_visit,35175,,,,2024-01-01
+Intermittent Gastrointestinal Endoscopic Procedure,per_procedure,276475,,,,2024-01-01
+Intermittent Immunologic Isolation Room Occupancy,per_night,110525,,,,2024-01-01
+Intermittent Infectious Theatre Time,per_hour,13900,,,,2024-01-01
+Intermittent Otolaryngologic Wound Care,per_visit,28500,,,,2024-01-01
+Outpatient Gastrointestinal Isolation Room Occupancy,per_day,57050,,,,2024-01-01
+Outpatient Haematology Transport Service,per_item,13375,,,,2024-01-01
+Outpatient Infectious Anaesthesia Administration,per_hour,11950,,,,2024-01-01
+Outpatient Metabolic Rehabilitation Programme,per_visit,18975,,,,2024-01-01
+Outpatient Pulmonary Transport Service,per_visit,18125,,,,2024-01-01
+Outpatient Renal Specimen Analysis,per_item,20700,,,,2024-01-01
+Outpatient Rheumatologic Pharmaceutical Dispensing,per_unit_dispensed,8050,,,,2024-01-01
+Postoperative Cardiac Ward Bed Occupancy,per_day,134325,,,,2024-01-01
+Postoperative Dermatologic Physiotherapy Session,per_hour,20200,4,,,2024-01-01
+Postoperative Geriatric Nutritional Support,per_day,108675,,,,2024-01-01
+Postoperative Haematology Nursing Observation,per_day,140975,,,,2024-01-01
+Postoperative Neurological Diagnostic Imaging,per_test,53550,,,,2024-01-01
+Postoperative Otolaryngologic Laboratory Panel,per_item,24475,,,,2024-01-01
+Postoperative Otolaryngologic Rehabilitation Programme,per_day,147875,,,,2024-01-01
+Postoperative Psychiatric Endoscopic Procedure,per_procedure,368575,,,,2024-01-01
+Postoperative Pulmonary Consultation,per_visit,26750,,,,2024-01-01
+Postoperative Rheumatologic Anaesthesia Administration,per_hour,8725,,,,2024-01-01
+Preoperative Cardiac Discharge Planning,per_hour,5675,,,,2024-01-01
+Preoperative Dermatologic Dialysis Session,per_procedure,439850,,,,2024-01-01
+Preoperative Endocrine Dialysis Session,per_procedure,400300,,,,2024-01-01
+Preoperative Gastrointestinal Radiotherapy Fraction,per_item,26025,,,,2024-01-01
+Preoperative Ophthalmic Imaging Interpretation,per_test,23275,,,,2024-01-01
+Preoperative Paediatric Laboratory Panel,per_test,44500,,,,2024-01-01
+Preoperative Psychiatric Home Visit,per_visit,32825,,,,2024-01-01
+Preoperative Psychiatric Radiotherapy Fraction,per_item,3450,4,,,2024-01-01
+Preoperative Rheumatologic Transport Service,per_item,15075,,,,2024-01-01
+Routine Endocrine Specimen Analysis,per_item,8725,,,,2024-01-01
+Routine Obstetric Diagnostic Imaging,per_item,26375,,,,2024-01-01
+Routine Psychiatric Consultation,per_procedure,282975,8,,,2024-01-01
+Routine Vascular Rehabilitation Programme,per_visit,37575,,,,2024-01-01
+Specialist Dermatologic Infusion Therapy,per_hour,17400,,,,2024-01-01
+Specialist Gastrointestinal Specimen Analysis,per_test,52850,,,,2024-01-01
+Specialist Haematology Endoscopic Procedure,per_procedure,101900,,,,2024-01-01
+Specialist Hepatic Case Conference,per_visit,35275,,,,2024-01-01
+Specialist Obstetric Dialysis Session,per_procedure,62925,,,,2024-01-01
+Specialist Ophthalmic Nutritional Support,per_day,32475,,,,2024-01-01
+Specialist Paediatric Biopsy Procedure,per_item,14225,,,,2024-01-01
+Specialist Psychiatric Discharge Planning,per_visit,38650,,44050,2025-01-01,2024-01-01
+Specialist Pulmonary Biopsy Procedure,per_procedure,385550,,,,2024-01-01
+Specialist Pulmonary Physiotherapy Session,per_hour,12500,,,,2024-01-01
+Standard Orthopaedic Theatre Time,per_hour,6025,,,,2024-01-01
+Standard Otolaryngologic Discharge Planning,per_visit,30600,,,,2024-01-01
+Standard Rheumatologic Imaging Interpretation,per_procedure,383550,,,,2024-01-01
+Supervised Hepatic Sterilisation Service,per_item,26625,,,,2024-01-01
+Supervised Neurological Laboratory Panel,per_item,23125,,,,2024-01-01
+Supervised Ophthalmic Nutritional Support,per_unit_dispensed,5950,,,,2024-01-01
+Supervised Otolaryngologic Wound Care,per_item,24025,,,,2024-01-01
+Advanced Dermatologic Nutritional Support,per_day,86525,,,,2025-01-01
+Elective Pulmonary Imaging Interpretation,per_procedure,456000,,,,2025-01-01
