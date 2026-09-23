@@ -17,14 +17,14 @@ from .canonical_lines import (
 from .duplicate_rules import (
     find_cross_invoice_duplicates,
 )
-from .hospital_3_contract_rules import (
-    Hospital3Rules,
-    load_hospital_3_rules,
+from .hospital_2_contract_rules import (
+    Hospital2Rules,
+    load_hospital_2_rules,
 )
 from .service_matcher import build_match_report
 
 
-HOSPITAL = 3
+HOSPITAL = 2
 
 
 def apply_uplift(
@@ -79,7 +79,7 @@ def add_invoice_context(
     invoices = pd.read_csv(
         project_root
         / "invoices"
-        / "hospital_3_invoices.csv"
+        / "hospital_2_invoices.csv"
     ).drop_duplicates(
         "invoice_id",
         keep="last",
@@ -138,7 +138,7 @@ def add_invoice_context(
 
 def apply_bundle_rates(
     data: pd.DataFrame,
-    rules: Hospital3Rules,
+    rules: Hospital2Rules,
 ) -> None:
     reliable = data[
         data["reliable_match"]
@@ -195,7 +195,7 @@ def apply_bundle_rates(
 
 def apply_threshold_premiums(
     data: pd.DataFrame,
-    rules: Hospital3Rules,
+    rules: Hospital2Rules,
 ) -> None:
     reliable = data[
         data["reliable_match"]
@@ -269,7 +269,7 @@ def apply_threshold_premiums(
 
 def apply_weekend_uplifts(
     data: pd.DataFrame,
-    rules: Hospital3Rules,
+    rules: Hospital2Rules,
 ) -> None:
     for (
         service,
@@ -317,7 +317,7 @@ def apply_weekend_uplifts(
 
 def apply_volume_discounts(
     data: pd.DataFrame,
-    rules: Hospital3Rules,
+    rules: Hospital2Rules,
     utilisation_report: pd.DataFrame,
 ) -> None:
     utilisation = utilisation_report.copy()
@@ -513,7 +513,7 @@ def apply_daily_caps(
 
 def find_excluded_lines(
     data: pd.DataFrame,
-    rules: Hospital3Rules,
+    rules: Hospital2Rules,
 ) -> set[str]:
     reliable = data[
         data["reliable_match"]
@@ -605,11 +605,11 @@ def calculate_line_expectations(
         report,
     )
 
-    rules = load_hospital_3_rules(
+    rules = load_hospital_2_rules(
         project_root
         / "contracts"
-        / "hospital_3"
-        / "base_agreement.md"
+        / "hospital_2"
+        / "master_services_agreement.md"
     )
 
     categories: dict[
@@ -852,7 +852,7 @@ def calculate_line_expectations(
     return data, categories
 
 
-def build_hospital_3_predictions(
+def build_hospital_2_predictions(
     project_root: Path,
 ) -> pd.DataFrame:
     predictions = audit_basic(
@@ -1007,7 +1007,7 @@ def main() -> None:
     )
 
     predictions = (
-        build_hospital_3_predictions(
+        build_hospital_2_predictions(
             project_root
         )
     )
@@ -1015,7 +1015,7 @@ def main() -> None:
     output_path = (
         project_root
         / "reports"
-        / "hospital_3_predictions.csv"
+        / "hospital_2_predictions.csv"
     )
 
     output_path.parent.mkdir(

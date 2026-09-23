@@ -1,0 +1,85 @@
+service,unit_basis,rate_cents,daily_cap,identity_rates_cents
+Advanced Cardiac Ventilation Support,per_hour,3375,24,2857|3043|3105|3308|3375|3416|3639|3713
+Advanced Dermatologic Pharmaceutical Dispensing,per_item,8175,4,6989|7358|7766|8094|8175|8993
+Ambulatory Hepatic Case Conference,per_hour,19775,,17847|18786|19725|19775|20289|20764|21357|22425
+Ambulatory Metabolic Imaging Interpretation,per_test,3900,,3510|3686|3861|3900|4095|4290
+Ambulatory Oncology Imaging Interpretation,per_test,6675,,5527|6008|6018|6141|6542|6675|7209|7850|8010
+Ambulatory Paediatric Isolation Room Occupancy,per_day,126525,,120199|123995|126208|130194|132851|138229|139494|142594|152779
+Assisted Cardiac Ventilation Support,per_day,156675,,132610|144141|156675|158556|172343
+Assisted Hepatic Physiotherapy Session,per_visit,19025,12,16103|17503|19025|21004|22830
+Assisted Immunologic Sterilisation Service,per_item,24500,,20286|21609|22540|23153|24010|25725|27048|28812|30870
+Assisted Metabolic Endoscopic Procedure,per_procedure,110150,,96271|101338|104643|106405|110150|115107|115658|121165|127223
+Assisted Renal Imaging Interpretation,per_procedure,161650,,141282|145744|153568|156154|158417|169733|184281|190100|203679
+Bedside Oncology Transfusion Service,per_unit_dispensed,3025,,2587|2669|2859|2874|2965|3176|3305|3409|3653
+Bedside Paediatric Consultation,per_procedure,421875,,349313|379688|388125|421875|436640|485156
+Comprehensive Gastrointestinal Endoscopic Procedure,per_procedure,141500,,141500
+Comprehensive Geriatric Wound Care,per_visit,11725,,10553|11080|11491|12065|12311|12663|12927|13789|14774
+Comprehensive Metabolic Ventilation Support,per_day,47650,,47650
+Comprehensive Oncology Transfusion Service,per_procedure,414475,8,373028|391679|406186|426495|428981|435199|456959|467113|500478
+Comprehensive Ophthalmic Isolation Room Occupancy,per_night,105950,,95620|98640|100653|103831|105686|111248|120783|124597|133497
+Comprehensive Palliative Consultation,per_visit,35050,,30634|32246|33298|33858|35050|35961|36803|37854|39747
+Continuous Immunologic Laboratory Panel,per_item,7025,,7025
+Continuous Metabolic Endoscopic Procedure,per_procedure,550750,,495675|520459|545243|550750|578288|605825
+Continuous Otolaryngologic Transport Service,per_item,14675,,12151|13208|13231|14176|14382|15188|15409|16538|17720
+Continuous Pulmonary Case Conference,per_hour,4300,,4300
+Elective Metabolic Pharmaceutical Dispensing,per_item,28450,,24866|26174|27028|28379|28450|29873|30101|32718|34354
+Elective Ophthalmic Nutritional Support,per_day,94300,,82418|86756|87793|89585|92414|93696|94300|99807|101844
+Elective Ophthalmic Recovery Room Occupancy,per_night,195975,,155637|163828|172019|172450|176867|176934|181073|186176|186246|195485|195558|195975|201070|205774|211653|222236
+Elective Pulmonary Radiotherapy Fraction,per_procedure,353625,,353625
+Elective Vascular Diagnostic Imaging,per_procedure,284175,,235297|250643|261441|268546|278492|298384|300657|320265|343141
+Emergency Gastrointestinal Endoscopic Procedure,per_procedure,707500,,618355|650900|672125|683445|707500|739338|742875|778250|817163
+Emergency Metabolic Discharge Planning,per_visit,20575,,14490|15435|16100|16538|17037|17150|17710|18148|18375|18865|18929|19444|20164|20213|20822|21604|22180|23765
+Emergency Neurological Biopsy Procedure,per_procedure,440750,,440750
+Emergency Oncology Imaging Interpretation,per_procedure,441250,4,357413|397125|441250|476550|529500
+Emergency Pulmonary Radiotherapy Fraction,per_item,5850,,4844|5160|5265|5382|5733|5813|5850|6192|6318
+Emergency Urologic Home Visit,per_visit,17325,,17325
+Extended Dermatologic Transport Service,per_visit,14475,4,13317|13983|14186|14475|14895|15199|15980|17023|17370
+Extended Endocrine Theatre Time,per_hour,15700,,13288|14155|14444|15166|15386|16485|17333|18463|19782
+Extended Neurological Consultation,per_visit,17100,,15732|16519|16758|17596|17955|18853|18878|20110|21546
+Extended Ophthalmic Transport Service,per_item,27750,,22977|24975|25530|26224|27750|28083|29138|30525|32051
+Extended Psychiatric Endoscopic Procedure,per_procedure,145200,,124146|130680|137940|143748|144837|145200|152460|159720|167706
+Extended Urologic Infusion Therapy,per_hour,7400,,5066|5333|5629|5759|5910|5925|6221|6327|6399|6660|6719|7030|7193|7382|7400|7770|7992|8392
+Focused Endocrine Theatre Time,per_hour,3925,,3925
+Focused Neurological Radiotherapy Fraction,per_item,1950,,1950
+Focused Urologic Nutritional Support,per_unit_dispensed,7700,,6376|6930|7084|7277|7700|8085|8501|9240|9702
+Inpatient Dermatologic Nursing Observation,per_day,132400,,109627|119160|121808|125118|132400|133989|139020|145640|152922
+Inpatient Immunologic Recovery Room Occupancy,per_hour,9500,,7695|8550|8978|9405|9500|9975|10450|10973
+Inpatient Psychiatric Case Conference,per_hour,12175,,12175
+Inpatient Pulmonary Critical Care Occupancy,per_night,57800,,49419|52020|54621|54910|57800|59303|60690|62424|65545
+Intensive Hepatic Case Conference,per_visit,21375,,17699|19238|19665|21375|22123|24581
+Intensive Oncology Sterilisation Service,per_procedure,247750,,216534|227930|230656|235363|242795|246164|247750|262219|267570
+Intermittent Orthopaedic Discharge Planning,per_visit,37375,,31634|34385|37375|39543|42981
+Intermittent Urologic Discharge Planning,per_hour,12125,,9822|10695|10913|11883|12125|13095|14259|14550
+Intermittent Vascular Telemetry Monitoring,per_hour,3850,8,3292|3396|3638|3658|3773|4023|4043|4150|4447
+Outpatient Dermatologic Home Visit,per_visit,19375,,16043|17438|17825|19251|19375|20925
+Outpatient Haematology Laboratory Panel,per_item,19050,,17526|18403|18669|18928|19603|20003|20163|21003|21603
+Outpatient Metabolic Physiotherapy Session,per_hour,16725,,15387|16156|16391|16725|17210|17561|17695|18849|19234
+Outpatient Neurological Recovery Room Occupancy,per_night,111475,,92302|100328|102557|105344|111475|112813|117049|122623|128754
+Outpatient Psychiatric Discharge Planning,per_visit,19300,,16502|17370|18335|19300|22002|23160
+Postoperative Musculoskeletal Imaging Interpretation,per_procedure,431375,,388238|407650|422748|443885|452944|465885|475591|507297|543533
+Preoperative Endocrine Rehabilitation Programme,per_visit,33725,,30353|31870|33388|33725|35411|37098|37182|38953
+Preoperative Gastrointestinal Nutritional Support,per_unit_dispensed,3750,,3385|3492|3563|3675|3750|3919|4043|4125
+Preoperative Immunologic Recovery Room Occupancy,per_night,142550,,135423|142194|142550|148965|149678|156805|157162|164645
+Preoperative Musculoskeletal Nutritional Support,per_unit_dispensed,6675,,6008|6308|6542|6609|6869|7009|7196|7359|7710
+Preoperative Ophthalmic Transport Service,per_visit,13975,6,13276|13940|13975|14604|14674|15373
+Preoperative Paediatric Biopsy Procedure,per_item,15675,,15675
+Routine Dermatologic Home Visit,per_visit,96875,,78469|87188|91547|95907|96875|101719|106563|111891
+Routine Geriatric Telemetry Monitoring,per_day,126725,,108350|114053|117981|124191|125458|126408|133061|136610|146368
+Routine Infectious Infusion Therapy,per_unit_dispensed,7150,24,6114|6435|6793|6950|7150|7722
+Routine Neurological Biopsy Procedure,per_item,18625,,15925|16763|17694|18104|18625|20115
+Routine Psychiatric Physiotherapy Session,per_visit,30950,,27050|28474|29403|30950|32343|34045
+Routine Psychiatric Telemetry Monitoring,per_hour_per_item,2950,,2950
+Routine Urologic Radiotherapy Fraction,per_item,5100,,5100
+Routine Urologic Transport Service,per_visit,15250,,13329|14030|14198|14945|15212|15433|16013|16440|17614
+Specialist Dermatologic Nursing Observation,per_hour,10450,,10450
+Specialist Gastrointestinal Pharmaceutical Dispensing,per_unit_dispensed,4125,,3159|3325|3491|3500|3658|3675|3723|3850|3919|4043|4115|4125|4311|4331|4538|4765
+Specialist Metabolic Sterilisation Service,per_item,19825,,17327|18239|18834|19776|19825|20816|20975|22799|23939
+Standard Infectious Ventilation Support,per_hour,19225,,19225
+Standard Paediatric Radiotherapy Fraction,per_procedure,117900,,76404|83195|84893|89138|92439|93382|95499|99041|101683|103988|106110|108946|111416|115542|116721|123795|127096|136175
+Standard Psychiatric Discharge Planning,per_hour,5200,,4306|4680|4784|4914|5167|5200|5460|5616|5897
+Supervised Immunologic Sterilisation Service,per_procedure,268575,,222380|241718|247089|268575|290061|322290
+Supervised Metabolic Discharge Planning,per_hour,16775,,14661|15433|15936|16668|16733|16775|17614|18117|19023
+Supervised Otolaryngologic Specimen Analysis,per_item,28300,,25541|26885|28229|28300|29715|30918|32545|34172
+Supervised Palliative Consultation,per_procedure,441425,,321637|342613|349605|357374|365500|380681|388450|389337|397283|406111|410981|432597|437784|441425|446718|467028|497486|507639
+Supervised Vascular Consultation,per_procedure,156100,,156100
+Supervised Vascular Diagnostic Imaging,per_test,20175,,20175

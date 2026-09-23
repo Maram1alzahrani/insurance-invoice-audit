@@ -7,6 +7,11 @@ deterministic integrity checks, contract-rule evaluation, and fuzzy service-name
 matching. Evaluation is performed on the 913 unique invoice IDs represented in
 the labels. Hospital 1 is not included in the final submission.
 
+Hospitals 2–5 are unlabelled and are included in the final submission. Their
+outputs are validated through contract-rule checks, manual review of uncertain
+matches, aggregate-rule audits, and automated tests, but their predictive
+accuracy cannot be measured directly.
+
 ## Invoice-level performance
 
 | Metric | Value |
@@ -71,6 +76,38 @@ This indicates that detecting a cap violation is easier than reconstructing the
 label's exact interpretation of how excess units and interacting adjustments
 should be removed.
 
+## Unlabelled-hospital validation
+
+The final submission includes every unique invoice from Hospitals 2–5:
+
+| Hospital | Invoices | Flagged | Flag rate |
+|---|---:|---:|---:|
+| Hospital 2 | 1,125 | 76 | 6.756% |
+| Hospital 3 | 932 | 70 | 7.511% |
+| Hospital 4 | 835 | 64 | 7.665% |
+| Hospital 5 | 1,050 | 76 | 7.238% |
+| **Total** | **3,942** | **286** | **7.255%** |
+
+These rates are descriptive outputs, not estimates of accuracy. Validation on
+the unlabelled hospitals included:
+
+- Manual inspection of unknown-service and low-confidence rate-mismatch cases.
+- Verification of service identity using description, unit basis, valid base
+  rates, amendment rates, bundle rates, and contextual rates where applicable.
+- Independent comparison of aggregate rules against all line items.
+- Submission validation for coverage, uniqueness, schema, integer cents,
+  categories, flags, confidence ranges, and ordering.
+- A regression suite containing 17 passing tests.
+
+The independent aggregate-rule audits for Hospitals 2, 3, and 5 produced zero
+differences for threshold premiums, bundled services, daily caps, exclusion
+windows, and cumulative volume discounts.
+
+Hospital 3 initially produced 86 flagged invoices. Correcting cumulative
+utilisation to include all prior service lines across the contract term removed
+16 flags whose recalculated expected totals matched their billed totals. The
+revised output contains 70 flagged invoices.
+
 ## Error analysis by failure type
 
 ### 1. Partial-description matches can look falsely exact
@@ -115,7 +152,7 @@ The same labelled hospital was used to refine parsing logic, rule ordering, and
 matching thresholds. A perfect invoice-level F1 therefore demonstrates internal
 consistency on Hospital 1 rather than proven generalisation. For example, the
 unknown-service thresholds were selected after observing Hospital 1 behaviour;
-Hospitals 3 and 4 have different description styles and no labels.
+Hospitals 2–5 have different description styles and no labels.
 
 Mitigation: retain conservative confidence values for unseen hospitals, review
 low-confidence matches, and validate against another labelled hospital before
@@ -125,6 +162,10 @@ production use.
 
 The pipeline identifies all erroneous Hospital 1 invoices, with one remaining
 category miss and four imperfect corrected totals. The strongest components are
-deterministic integrity checks and explicit contract rules. The main residual
+deterministic integrity checks, explicit contract rules, and reproducible
+aggregate-rule validation.
+
+The final submission covers all 3,942 unique invoices from Hospitals 2–5. Their
+true accuracy remains unknown because labels are unavailable. The main residual
 risks are semantic service matching, overlapping category definitions, exact
 daily-cap reconstruction, and development-set overfitting.

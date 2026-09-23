@@ -17,14 +17,23 @@ from .canonical_lines import (
 from .duplicate_rules import (
     find_cross_invoice_duplicates,
 )
-from .hospital_3_contract_rules import (
-    Hospital3Rules,
-    load_hospital_3_rules,
+from .hospital_5_contract_rules import (
+    Hospital5Rules,
+    load_hospital_5_rules,
 )
 from .service_matcher import build_match_report
 
 
-HOSPITAL = 3
+HOSPITAL = 5
+
+
+def round_half_up(value: Decimal) -> int:
+    return int(
+        value.quantize(
+            Decimal("1"),
+            rounding=ROUND_HALF_UP,
+        )
+    )
 
 
 def apply_uplift(
@@ -37,12 +46,7 @@ def apply_uplift(
         / Decimal(100)
     )
 
-    return int(
-        value.quantize(
-            Decimal("1"),
-            rounding=ROUND_HALF_UP,
-        )
-    )
+    return round_half_up(value)
 
 
 def apply_discount(
@@ -55,12 +59,19 @@ def apply_discount(
         / Decimal(100)
     )
 
-    return int(
-        value.quantize(
-            Decimal("1"),
-            rounding=ROUND_HALF_UP,
-        )
+    return round_half_up(value)
+
+
+def apply_multiplier(
+    rate_cents: int,
+    multiplier: object,
+) -> int:
+    value = (
+        Decimal(int(rate_cents))
+        * Decimal(str(multiplier))
     )
+
+    return round_half_up(value)
 
 
 def record_category(
@@ -79,7 +90,7 @@ def add_invoice_context(
     invoices = pd.read_csv(
         project_root
         / "invoices"
-        / "hospital_3_invoices.csv"
+        / "hospital_5_invoices.csv"
     ).drop_duplicates(
         "invoice_id",
         keep="last",
@@ -91,6 +102,8 @@ def add_invoice_context(
                 "invoice_id",
                 "patient_id",
                 "invoice_date",
+                "facility_code",
+                "plan_tier",
             ]
         ],
         on="invoice_id",
@@ -138,7 +151,7 @@ def add_invoice_context(
 
 def apply_bundle_rates(
     data: pd.DataFrame,
-    rules: Hospital3Rules,
+    rules: Hospital5Rules,
 ) -> None:
     reliable = data[
         data["reliable_match"]
@@ -170,12 +183,14 @@ def apply_bundle_rates(
             }.issubset(present_services):
                 continue
 
-            rates = {
+            bundle_rates = {
                 service_a: rate_a,
                 service_b: rate_b,
             }
 
-            for service, rate in rates.items():
+            for service, rate in (
+                bundle_rates.items()
+            ):
                 indexes = group.index[
                     group["matched_service"].eq(
                         service
@@ -193,9 +208,73 @@ def apply_bundle_rates(
                 ] = True
 
 
+def apply_context_multipliers(
+    data: pd.DataFrame,
+    rules: Hospital5Rules,
+) -> None:
+    eligible = data[
+        data["reliable_match"]
+    ]
+
+    for index, row in eligible.iterrows():
+        service = str(
+            row["matched_service"]
+        )
+
+        facility_code = str(
+            row["facility_code"]
+        )
+
+        plan_tier = str(
+            row["plan_tier"]
+        )
+
+        try:
+            facility_multiplier = (
+                rules.facility_multipliers[
+                    service
+                ][facility_code]
+            )
+
+            plan_multiplier = (
+                rules.plan_multipliers[
+                    service
+                ][plan_tier]
+            )
+        except KeyError as error:
+            raise ValueError(
+                "Missing Hospital 5 multiplier for "
+                f"service={service!r}, "
+                f"facility={facility_code!r}, "
+                f"plan_tier={plan_tier!r}"
+            ) from error
+
+        current_rate = int(
+            data.at[
+                index,
+                "expected_rate_cents",
+            ]
+        )
+
+        current_rate = apply_multiplier(
+            current_rate,
+            facility_multiplier,
+        )
+
+        current_rate = apply_multiplier(
+            current_rate,
+            plan_multiplier,
+        )
+
+        data.at[
+            index,
+            "expected_rate_cents",
+        ] = current_rate
+
+
 def apply_threshold_premiums(
     data: pd.DataFrame,
-    rules: Hospital3Rules,
+    rules: Hospital5Rules,
 ) -> None:
     reliable = data[
         data["reliable_match"]
@@ -269,7 +348,7 @@ def apply_threshold_premiums(
 
 def apply_weekend_uplifts(
     data: pd.DataFrame,
-    rules: Hospital3Rules,
+    rules: Hospital5Rules,
 ) -> None:
     for (
         service,
@@ -315,11 +394,10 @@ def apply_weekend_uplifts(
         ] = True
 
 
-def apply_volume_discounts(
-    data: pd.DataFrame,
-    rules: Hospital3Rules,
+def build_volume_discount_lookup(
     utilisation_report: pd.DataFrame,
-) -> None:
+    rules: Hospital5Rules,
+) -> dict[str, int]:
     utilisation = utilisation_report.copy()
 
     utilisation["service_date_parsed"] = (
@@ -338,16 +416,15 @@ def apply_volume_discounts(
         ~utilisation[
             "suspected_unknown_service"
         ].fillna(False)
-        & utilisation["matched_service"].notna()
-        & utilisation["base_rate_cents"].notna()
+        & utilisation[
+            "matched_service"
+        ].notna()
+        & utilisation[
+            "base_rate_cents"
+        ].notna()
     )
 
-    in_contract_term = utilisation[
-        "service_date_parsed"
-    ].between(
-        pd.Timestamp("2024-01-01"),
-        pd.Timestamp("2025-12-31"),
-    )
+    discounts_by_line: dict[str, int] = {}
 
     for (
         service,
@@ -355,10 +432,12 @@ def apply_volume_discounts(
     ) in rules.volume_discounts.items():
         candidates = utilisation[
             utilisation["reliable_match"]
-            & in_contract_term
-            & utilisation["matched_service"].eq(
-                service
-            )
+            & utilisation[
+                "matched_service"
+            ].eq(service)
+            & utilisation[
+                "service_date_parsed"
+            ].notna()
         ].sort_values(
             [
                 "service_date_parsed",
@@ -375,8 +454,6 @@ def apply_volume_discounts(
             - candidates["quantity"]
         )
 
-        discount_by_line: dict[str, int] = {}
-
         for index, prior_quantity in (
             prior_quantities.items()
         ):
@@ -391,61 +468,65 @@ def apply_volume_discounts(
                         percentage
                     )
 
-            line_id = str(
-                candidates.at[
-                    index,
-                    "line_id",
-                ]
-            )
-
-            discount_by_line[
-                line_id
+            discounts_by_line[
+                str(
+                    candidates.at[
+                        index,
+                        "line_id",
+                    ]
+                )
             ] = discount_percentage
 
-        target_indexes = data.index[
-            data["reliable_match"]
-            & data["matched_service"].eq(
-                service
-            )
-        ]
+    return discounts_by_line
 
-        for index in target_indexes:
-            line_id = str(
-                data.at[
-                    index,
-                    "line_id",
-                ]
-            )
 
-            discount_percentage = (
-                discount_by_line.get(
-                    line_id,
-                    0,
-                )
-            )
+def apply_volume_discounts(
+    data: pd.DataFrame,
+    rules: Hospital5Rules,
+    utilisation_report: pd.DataFrame,
+) -> None:
+    discounts_by_line = (
+        build_volume_discount_lookup(
+            utilisation_report,
+            rules,
+        )
+    )
 
-            if discount_percentage == 0:
-                continue
+    line_discounts = (
+        data["line_id"]
+        .astype(str)
+        .map(discounts_by_line)
+        .fillna(0)
+        .astype(int)
+    )
 
-            current_rate = int(
-                data.at[
-                    index,
-                    "expected_rate_cents",
-                ]
-            )
+    for index in data.index[
+        data["reliable_match"]
+        & line_discounts.gt(0)
+    ]:
+        percentage = int(
+            line_discounts.at[index]
+        )
 
+        current_rate = int(
             data.at[
                 index,
                 "expected_rate_cents",
-            ] = apply_discount(
-                current_rate,
-                discount_percentage,
-            )
+            ]
+        )
 
-            data.at[
-                index,
-                "discount_percentage",
-            ] = discount_percentage
+        data.at[
+            index,
+            "expected_rate_cents",
+        ] = apply_discount(
+            current_rate,
+            percentage,
+        )
+
+        data.at[
+            index,
+            "discount_percentage",
+        ] = percentage
 
 
 def apply_daily_caps(
@@ -513,7 +594,7 @@ def apply_daily_caps(
 
 def find_excluded_lines(
     data: pd.DataFrame,
-    rules: Hospital3Rules,
+    rules: Hospital5Rules,
 ) -> set[str]:
     reliable = data[
         data["reliable_match"]
@@ -605,11 +686,11 @@ def calculate_line_expectations(
         report,
     )
 
-    rules = load_hospital_3_rules(
+    rules = load_hospital_5_rules(
         project_root
         / "contracts"
-        / "hospital_3"
-        / "base_agreement.md"
+        / "hospital_5"
+        / "network_reimbursement_agreement.md"
     )
 
     categories: dict[
@@ -669,6 +750,11 @@ def calculate_line_expectations(
     )
 
     apply_bundle_rates(
+        data,
+        rules,
+    )
+
+    apply_context_multipliers(
         data,
         rules,
     )
@@ -833,8 +919,7 @@ def calculate_line_expectations(
         "expected_line_total_cents",
     ] = 0
 
-    # An unknown service cannot be repriced safely.
-    # Preserve its arithmetic total and lower confidence later.
+    # لا يمكن إعادة تسعير خدمة غير معروفة بأمان.
     data.loc[
         unknown_mask,
         "expected_line_total_cents",
@@ -852,7 +937,7 @@ def calculate_line_expectations(
     return data, categories
 
 
-def build_hospital_3_predictions(
+def build_hospital_5_predictions(
     project_root: Path,
 ) -> pd.DataFrame:
     predictions = audit_basic(
@@ -906,8 +991,7 @@ def build_hospital_3_predictions(
         ):
             confidence = (
                 0.75
-                if category
-                == "unknown_service"
+                if category == "unknown_service"
                 else 0.95
                 if category
                 in high_confidence_categories
@@ -1007,7 +1091,7 @@ def main() -> None:
     )
 
     predictions = (
-        build_hospital_3_predictions(
+        build_hospital_5_predictions(
             project_root
         )
     )
@@ -1015,7 +1099,7 @@ def main() -> None:
     output_path = (
         project_root
         / "reports"
-        / "hospital_3_predictions.csv"
+        / "hospital_5_predictions.csv"
     )
 
     output_path.parent.mkdir(

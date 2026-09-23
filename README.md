@@ -1,119 +1,18 @@
-# Insurance Invoice Audit
-
-This repository contains a reproducible, contract-aware audit pipeline for the
-Meridian Health Assurance Group invoice-auditing exercise. It reads hospital
-contracts and invoice data, normalizes free-text service descriptions, applies
-contract and integrity rules, estimates corrected totals, and produces the
-required submission file.
+# Hospital 1 Development-Set Evaluation
 
 ## Scope
 
-- **Hospital 1** is used only as the labelled development and calibration set.
-- **Hospitals 3 and 4** are the two unlabelled hospitals included in the final
-  submission.
-- Hospitals 2 and 5 were intentionally left out to prioritise two complete,
-  reviewed implementations over a shallow pass across all four unlabelled
-  hospitals.
+Hospital 1 was used as the labelled development set. The audit pipeline combines
+deterministic integrity checks, contract-rule evaluation, and fuzzy service-name
+matching. Evaluation is performed on the 913 unique invoice IDs represented in
+the labels. Hospital 1 is not included in the final submission.
 
-Hospital 3 was selected because its contract is split across a base agreement,
-rate appendix, and amendment with effective-date changes. Hospital 4 was
-selected because its single agreement contains a different set of conditional
-reimbursement rules. This combination tests both document reconciliation and
-rule interaction.
+Hospitals 2–5 are unlabelled and are included in the final submission. Their
+outputs are validated through contract-rule checks, manual review of uncertain
+matches, aggregate-rule consistency checks, and automated tests, but their
+predictive accuracy cannot be measured directly.
 
-## Approach
-
-The solution is a rule-based audit engine rather than a trained predictive
-model. Its main stages are:
-
-1. Validate invoice IDs, contract numbers, dates, arithmetic, and totals.
-2. Parse contract rate tables and adjustment clauses into structured rules.
-3. Normalize billing descriptions and match them to contracted services using
-   abbreviation expansion and fuzzy similarity.
-4. Use unit basis and price as supporting identity signals.
-5. Apply contract-specific rules for rates, units, caps, bundles, exclusions,
-   premiums, discounts, and duplicate billing.
-6. Retain uncertainty when a contractual service or exact corrected amount
-   cannot be justified confidently.
-7. Validate coverage, schema, cents, flags, categories, and confidence before
-   writing `submission.csv`.
-
-All monetary calculations use integer cents. Percentage adjustments use
-`Decimal` with half-up rounding.
-
-## Repository structure
-
-```text
-.
-├── config/                         # Parsed contract rate tables
-├── contracts/                      # Source contracts supplied with the task
-├── invoices/                       # Source invoice and line-item data
-├── labels/                         # Hospital 1 development labels
-├── prompts/                        # Versioned AI prompt history
-├── reports/                        # Generated predictions and review reports
-├── src/invoice_audit/              # Parsers, matchers, rules, and engines
-├── tests/                          # Automated tests
-├── decision_log.md                 # Assumptions and unresolved ambiguities
-├── evaluation_report.md            # Hospital 1 evaluation and error analysis
-├── requirements.txt                # Pinned Python dependencies
-└── submission.csv                  # Final Hospitals 3 and 4 predictions
-```
-
-## Setup
-
-Python 3.11 is recommended.
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements.txt
-```
-
-## Reproduce the outputs
-
-Run the following commands from the repository root.
-
-### 1. Parse the selected contracts
-
-```bash
-python -m src.invoice_audit.contract_parser
-python -m src.invoice_audit.hospital_3_parser
-python -m src.invoice_audit.hospital_4_parser
-```
-
-### 2. Run Hospital 1 development evaluation
-
-```bash
-python -m src.invoice_audit.audit_engine
-```
-
-### 3. Generate Hospital 3 predictions
-
-```bash
-python -m src.invoice_audit.service_matcher --hospital 3
-python -m src.invoice_audit.hospital_3_engine
-```
-
-### 4. Generate Hospital 4 predictions
-
-```bash
-python -m src.invoice_audit.service_matcher --hospital 4
-python -m src.invoice_audit.hospital_4_engine
-```
-
-### 5. Build and validate the final submission
-
-```bash
-python -m src.invoice_audit.build_submission
-```
-
-The last command writes `submission.csv` and fails with a descriptive error if
-coverage, schema, ID uniqueness, monetary types, flags, categories, or
-confidence values are invalid.
-
-## Results
-
-### Hospital 1 development set
+## Invoice-level performance
 
 | Metric | Value |
 |---|---:|
@@ -125,44 +24,148 @@ confidence values are invalid.
 | Recall | 1.000 |
 | F1 | 1.000 |
 
-This is a development-set result, not an unbiased estimate of unseen-hospital
-performance. Hospital 1 labels were used while refining the rules and matching
-thresholds. Category-level evaluation is not perfect: unknown-service recall is
-11/12, two additional overlapping date categories are reported, and exact
-corrected totals match 93.1% of erroneous invoices. See
-[`evaluation_report.md`](evaluation_report.md) for the full evaluation and
-failure analysis.
+This result is a development-set result, not an unbiased estimate of performance
+on unseen hospitals. Hospital 1 labels were used while iterating on rules and
+matching thresholds, so the invoice-level score is expected to be optimistic.
 
-### Unlabelled hospitals
+## Per-category performance
 
-| Hospital | Unique invoices | Flagged | Flag rate |
+An invoice may contain more than one error category. Category-level false
+positives therefore do not necessarily create invoice-level false positives.
+
+| Error category | Detected / actual | Recall | Category false positives |
 |---|---:|---:|---:|
-| Hospital 3 | 932 | 86 | 9.227% |
+| `bundle_not_applied` | 5 / 5 | 1.000 | 0 |
+| `contract_number_mismatch` | 5 / 5 | 1.000 | 0 |
+| `cross_invoice_duplicate` | 4 / 4 | 1.000 | 0 |
+| `daily_cap_exceeded` | 4 / 4 | 1.000 | 0 |
+| `duplicate_invoice_id` | 5 / 5 | 1.000 | 0 |
+| `exclusion_window_violation` | 4 / 4 | 1.000 | 0 |
+| `invoice_total_mismatch` | 6 / 6 | 1.000 | 0 |
+| `line_total_arithmetic` | 6 / 6 | 1.000 | 0 |
+| `malformed_service_date` | 6 / 6 | 1.000 | 0 |
+| `premium_incorrectly_applied` | 6 / 6 | 1.000 | 0 |
+| `premium_omitted` | 3 / 3 | 1.000 | 0 |
+| `service_date_after_invoice_date` | 5 / 5 | 1.000 | 2 |
+| `service_date_out_of_window` | 5 / 5 | 1.000 | 0 |
+| `unit_price_mismatch` | 10 / 10 | 1.000 | 0 |
+| `unknown_service` | 11 / 12 | 0.917 | 0 |
+| `volume_discount_incorrectly_applied` | 4 / 4 | 1.000 | 0 |
+| `volume_discount_omitted` | 4 / 4 | 1.000 | 0 |
+| `wrong_unit_basis` | 11 / 11 | 1.000 | 0 |
+
+## Expected-total accuracy
+
+| Measure | Value |
+|---|---:|
+| Exact total agreement across all invoices | 99.6% |
+| Exact total agreement on erroneous invoices | 93.1% |
+| MAE on erroneous invoices | 5,249.57 cents |
+
+The four remaining total disagreements all involve daily-cap corrections:
+
+| Invoice | Prediction minus labelled total (cents) |
+|---|---:|
+| `INV-H1-000015` | +14,775 |
+| `INV-H1-000049` | +25,425 |
+| `INV-H1-000227` | +76,275 |
+| `INV-H1-000725` | +188,000 |
+
+The invoices are correctly flagged, but their corrected totals remain too high.
+This indicates that detecting a cap violation is easier than reconstructing the
+label's exact interpretation of how excess units and interacting adjustments
+should be removed.
+
+## Unlabelled-hospital validation
+
+The final submission includes every unique invoice from Hospitals 2–5:
+
+| Hospital | Invoices | Flagged | Flag rate |
+|---|---:|---:|---:|
+| Hospital 2 | 1,125 | 76 | 6.756% |
+| Hospital 3 | 932 | 70 | 7.511% |
 | Hospital 4 | 835 | 64 | 7.665% |
-| **Combined** | **1,767** | **150** | **8.489%** |
+| Hospital 5 | 1,050 | 76 | 7.238% |
+| **Total** | **3,942** | **286** | **7.255%** |
 
-Hospitals 3 and 4 do not have ground-truth labels. These counts are audit
-predictions and should not be interpreted as measured accuracy.
+These rates are descriptive outputs, not estimates of accuracy. Validation on
+the unlabelled hospitals included:
 
-## Key limitations
+- Manual inspection of unknown-service and low-confidence rate-mismatch cases.
+- Verification of service identity using description, unit basis, valid base
+  rates, amendment rates, bundle rates, and contextual rates where applicable.
+- Aggregate-rule consistency checks against all available line items.
+- Submission validation for coverage, uniqueness, schema, integer cents,
+  categories, flags, confidence ranges, and ordering.
+- A regression suite containing 17 passing tests.
 
-- Short descriptions can be lexical subsets of longer contracted service names
-  and receive misleadingly high fuzzy scores.
-- Multiple factual date violations may overlap while a reference taxonomy uses
-  only one primary category.
-- Daily-cap violations can be detected even when interaction with other rules
-  leaves the exact corrected total ambiguous.
-- Confidence scores are conservative rule-based judgments, not calibrated
-  probabilities from an independent validation set.
-- Hospitals 2 and 5 are not included in the current submission.
+The aggregate-rule consistency checks for Hospitals 2, 3, and 5 produced zero
+differences for threshold premiums, bundled services, daily caps, exclusion
+windows, and cumulative volume discounts.
 
-Assumptions, rule interpretations, and next steps are documented in
-[`decision_log.md`](decision_log.md).
+Hospital 3 initially produced 86 flagged invoices. Correcting cumulative
+utilisation to include all prior service lines across the contract term removed
+16 flags whose recalculated expected totals matched their billed totals. The
+revised output contains 70 flagged invoices.
 
-## AI assistance disclosure
+## Error analysis by failure type
 
-AI assistance was used for planning, code drafting, debugging, rule iteration,
-and documentation, as explicitly permitted by the exercise. Generated code was
-executed locally, compared with Hospital 1 labels, reviewed on uncertain cases,
-and regression-tested before acceptance. The main prompt iterations are stored
-as versioned files in [`prompts/`](prompts/).
+### 1. Partial-description matches can look falsely exact
+
+Token-set similarity is robust to abbreviations and word order, but it can give
+an overconfident match when a short description is a subset of a longer service
+name. For example, line `H1-L00236-03` on `INV-H1-000236` has the description
+`Fract Outpatient Radiotherapy`. It received a perfect text score against a
+more specific contracted radiotherapy service even though its billed unit and
+price did not agree. As a result, one `unknown_service` category was missed.
+
+Mitigation: combine text similarity with price, unit-basis, and match-margin
+signals, and lower confidence when the description omits clinically meaningful
+specialty terms.
+
+### 2. Logically overlapping date errors may not match the label taxonomy
+
+A service outside the contract term can also occur after the invoice date. The
+engine reports both facts, while the labels may record only the primary error.
+For example, `INV-H1-000852` contains a service dated `2026-07-01`, after both
+the invoice date and the contract end. This creates a category-level false
+positive for `service_date_after_invoice_date`, although the invoice itself is
+correctly flagged. The same overlap occurs for `INV-H1-000179`.
+
+Mitigation: preserve all factual reasons internally, but define a documented
+category-precedence policy when a single reporting label is required.
+
+### 3. Daily-cap detection and total reconstruction are separate problems
+
+The pipeline detects every labelled daily-cap violation, but exact total
+reconstruction fails on four invoices. `INV-H1-000725`, for example, is flagged
+correctly while its predicted corrected total is 188,000 cents above the
+labelled value.
+
+Mitigation: represent caps as explicit allocation rules at the patient,
+service, and service-date level, then test their interaction with premiums,
+discounts, bundles, and duplicated lines independently.
+
+### 4. Development-set reuse makes the headline score optimistic
+
+The same labelled hospital was used to refine parsing logic, rule ordering, and
+matching thresholds. A perfect invoice-level F1 therefore demonstrates internal
+consistency on Hospital 1 rather than proven generalisation. For example, the
+unknown-service thresholds were selected after observing Hospital 1 behaviour;
+Hospitals 2–5 have different description styles and no labels.
+
+Mitigation: retain conservative confidence values for unseen hospitals, review
+low-confidence matches, and validate against another labelled hospital before
+production use.
+
+## Conclusion
+
+The pipeline identifies all erroneous Hospital 1 invoices, with one remaining
+category miss and four imperfect corrected totals. The strongest components are
+deterministic integrity checks, explicit contract rules, and reproducible
+aggregate-rule consistency checks.
+
+The final submission covers all 3,942 unique invoices from Hospitals 2–5. Their
+true accuracy remains unknown because labels are unavailable. The main residual
+risks are semantic service matching, overlapping category definitions, exact
+daily-cap reconstruction, and development-set overfitting.
