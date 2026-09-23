@@ -9,7 +9,7 @@ the labels. Hospital 1 is not included in the final submission.
 
 Hospitals 2–5 are unlabelled and are included in the final submission. Their
 outputs are validated through contract-rule checks, manual review of uncertain
-matches, aggregate-rule audits, and automated tests, but their predictive
+matches, aggregate-rule consistency checks, and automated tests, but their predictive
 accuracy cannot be measured directly.
 
 ## Invoice-level performance
@@ -94,12 +94,12 @@ the unlabelled hospitals included:
 - Manual inspection of unknown-service and low-confidence rate-mismatch cases.
 - Verification of service identity using description, unit basis, valid base
   rates, amendment rates, bundle rates, and contextual rates where applicable.
-- Independent comparison of aggregate rules against all line items.
+- Aggregate-rule consistency checks against all line items.
 - Submission validation for coverage, uniqueness, schema, integer cents,
   categories, flags, confidence ranges, and ordering.
 - A regression suite containing 17 passing tests.
 
-The independent aggregate-rule audits for Hospitals 2, 3, and 5 produced zero
+The aggregate-rule consistency checks for Hospitals 2, 3, and 5 produced zero
 differences for threshold premiums, bundled services, daily caps, exclusion
 windows, and cumulative volume discounts.
 
